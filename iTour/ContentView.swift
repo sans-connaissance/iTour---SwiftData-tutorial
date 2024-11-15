@@ -13,14 +13,17 @@ struct ContentView: View {
     /// Methods for when you know sort order at compile time
     //   @Query(sort: \Destination.priority, order: .reverse) var destinations: [Destination]
     //    @Query(sort: [SortDescriptor(\Destination.priority, order: .reverse), SortDescriptor(\Destination.name)]) var destinations: [Destination]
+    
     @State private var path = [Destination]()
     @State private var sortOrder = SortDescriptor(\Destination.name)
+    @State private var searchText = ""
     
     var body: some View {
         NavigationStack(path: $path) {
-            DestinationListView(sort: sortOrder)
+            DestinationListView(sort: sortOrder, searchString: searchText)
                 .navigationTitle("iTour")
                 .navigationDestination(for: Destination.self, destination: EditDestinationView.init)
+                .searchable(text: $searchText)
                 .toolbar {
                     Button("Add Samples", action: addSamples)
                     Button("Add Destination", systemImage: "plus" , action: addDestination)
